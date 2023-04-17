@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Student Allotment Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <style>
+      .container {
+        width: 70%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Student Allotment Report</h1>
+      ${columnSelector}
+      <table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            ${tableHeader.map((header) => `
+              <th class="column-${header}">${header}</th>
+            `).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${tableRows.map((row) => `
+            <tr>
+              ${tableHeader.map((header) => `
+                <td class="column-${header}">${row[tableHeader.indexOf(header)]}</td>
+              `).join('')}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // initialize DataTable with all columns visible
+        const dataTable = $('#dataTable').DataTable();
+
+        // handle checkbox change events
+        $('.column-selector').change(function() {
+          const columnName = $(this).val();
+          const columnVisible = $(this).prop('checked');
+          const columnIndex = dataTable.column(`.column-${columnName}`).index();
+
+          dataTable.column(columnIndex).visible(columnVisible);
+        });
+      });
+    </script>
+  </body>
+</html>

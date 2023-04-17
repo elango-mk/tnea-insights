@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TNEA Insights</title>
+    <link rel="stylesheet" href="/styles/home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-element module-title">TNEA Allotment Info</div>
+            <div class = "align-right" style="margin-left: auto">
+                    <img class="top-bar-element" id="cr-refresh-data" title="Refresh" src="/images/reload.png"  width="17" height="17" onclick="getCollectionRunnerData()"></img>
+            </div>
+    </div>
+    
+    <div style="display:flex;width:100%;height:calc(100% - 30px)">
+        <div class="left-bar">
+            <div class="left-bar-item active-tab" id="allotment" onclick="switchTabs(this)">
+                <img  title="Runner" src="/images/allotment.png"  width="30"   height="30"></img><br>
+                <label style="font-weight:bold;font-size: 12px">Allotment</label>
+            </div>
+        </div>
+        <div class="left-menu">
+            <div class="left-menu-item active-tab">
+                <label style="font-weight:bold;">2022</label>
+            </div>
+        </div>
+        <div class="content-pane">
+            <div  id="column-selection">
+                <label id="columnSelectorBtn">Custom Filter ⮟</label>
+                <div id="custom-filter" style="display:none;background-color: aliceblue;">
+                    <div style="display:flex;flex-direction: row;column-gap: 200px;">
+                        <div>
+                            <table class="filter-table">
+                                <tr>
+                                    <td>Aggregate Mark</td>
+                                    <td>
+                                        <select id="filter-mark-comp">
+                                            <option value="le"><=</option>
+                                            <option value="ge">>=</option>
+                                            <option value="e">>=</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input id="filter-mark-input"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Rank</td>
+                                    <td>
+                                        <select id="filter-rank-comp">
+                                            <option value="le"><=</option>
+                                            <option value="ge">>=</option>
+                                            <option value="e">>=</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input id="filter-rank-input" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Community</td>
+                                    <td>
+                                        <select id="filter-community-input">
+                                            <option>-</option>
+                                            <option value="OC">OC</option>
+                                            <option value="BC">BC</option>
+                                            <option value="BCM">BCM</option>
+                                            <option value="MBC">MBC</option>
+                                            <option value="DNC">DNC</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SCA">SCA</option>
+                                            <option value="ST">ST</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="filter-table">
+                                <tr>
+                                    <td>College Code</td>
+                                    <td>
+                                        <select id="filter-college-comp" disabled>
+                                            <option value="equals">equlas</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input id="filter-college-input" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Branch Code</td>
+                                    <td>
+                                        <select id="filter-branch-comp" disabled>
+                                            <option value="equals">equlas</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input id="filter-branch-input" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Round</td>
+                                    <td>
+                                        <select id="filter-round-input">
+                                            <option>-</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="columnSelectorItems"></div>
+                </div>
+            </div>
+            <br>
+            <div class="" id="allotment-data">
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="../js/home.js"> </script>
+    <script type="text/javascript" src="../js/allotment.js"> </script>
+    <script type="text/javascript" src="../js/common.js"> </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {            
+            populateAllotmentData();          
+        });
+      </script>
+</body>
+</html>
