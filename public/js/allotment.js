@@ -14,7 +14,7 @@ function populateAllotmentData()
               `).join('')}
         `;
 
-          let tableHtml = `<table id="dataTable" class="table table-striped table-bordered" style="width:100%">
+        let tableHtml = `<table id="dataTable" class="table table-striped table-bordered" style="width:100%">
           <thead>
             <tr>
               ${tableHeader.map((header) => `
@@ -48,6 +48,7 @@ function populateAllotmentData()
        
    
       // DataTable
+      //let datatable1 = new DataTable('#dataTable');
       const dataTable = $('#dataTable').DataTable({
           initComplete: function () {
               // Apply the search
@@ -64,7 +65,8 @@ function populateAllotmentData()
                   });
           },
           "pageLength": 25,
-          "scrollY": "610px"
+          "scrollY": "510px",
+          "scrollX": true
       });
 
 
