@@ -42,7 +42,8 @@ function runQuery(sqlQuery)
           console.error(err.message);
           reject(err);
         } else {
-          resolve(rows);
+          const data = rows.map(row => Object.values(row));
+          resolve(data);
         }
       });
     });

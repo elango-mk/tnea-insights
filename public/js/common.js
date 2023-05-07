@@ -336,4 +336,24 @@ function jsonSyntaxHighlight(json) {
 }
 
 
+function getFiltersAsArray(tableElement)
+{
+	const filters = [];
+	$(tableElement).find('tr').each(function() {
+		let currentFilter = [];
+		const key = $(this).find('select[name="filter-key"]').val();
+		const value = $(this).find('input[name="filter-value"]').val();
+		const comparator = $(this).find('select[name="filter-comp"]').val();
+		if(key !== undefined)
+		{
+		currentFilter.push(key); 
+		currentFilter.push(comparator); 
+		currentFilter.push(value); 
+		currentFilter.push($(this).find('input[name="filter-value2"]').val()); 
+		filters.push(currentFilter);
+		}
+	});
+	return filters;
+}
+
 
