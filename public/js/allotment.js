@@ -61,92 +61,42 @@ function applyFilter()
     const key = filter[0].toLowerCase();
     const comparater = filter[1].toLowerCase();
     const value = filter[2];
-    if(key === "mark")
+    if(key === "mark" || key === "rank" || key === "round")
     {
-      const colIndex = allotmentColumns['Mark'];
+      let colIndex = 0;
+      switch (key)
+      {
+        case "mark":
+          colIndex = allotmentColumns['Mark'];
+          break;
+        case "rank":
+          colIndex = allotmentColumns['Rank'];
+          break;
+        case "round":
+          colIndex = allotmentColumns['Round'];
+          break;
+      } 
       if(comparater === "<=")
       {
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[colIndex]) || 0;     
-          if(mark <= parseFloat(value)) return true; else return false;
+          var colData = parseFloat(data[colIndex]) || 0;     
+          if(colData <= parseFloat(value)) return true; else return false;
         };
       }else if(comparater === ">=")
       {
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[colIndex]) || 0;
-          if(mark >= parseFloat(value)) return true; else return false;
+          var colData = parseFloat(data[colIndex]) || 0;
+          if(colData >= parseFloat(value)) return true; else return false;
         };
       }else if(comparater === "="){
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[colIndex]) || 0;
-          if(mark == parseFloat(value)) return true; else return false;
+          var colData = parseFloat(data[colIndex]) || 0;
+          if(colData == parseFloat(value)) return true; else return false;
         };
       }else if(comparater === "range"){
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[colIndex]) || 0;
-          if(mark >= parseFloat(value) && mark <= parseFloat(filter[3])) return true; else return false;
-        };
-      }
-      else
-      {
-        console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
-      }   
-    }
-    else if(key === "rank")
-    {
-      const colIndex = allotmentColumns['Rank'];
-      if(comparater === "<=")
-      {
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;     
-          if(rank <= parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === ">=")
-      {
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank >= parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === "="){
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank == parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === "range"){
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank >= parseFloat(value) && rank <= parseFloat(filter[3])) return true; else return false;
-        };
-      }
-      else
-      {
-        console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
-      }   
-    }
-    else if(key === "round")
-    {
-      const colIndex = allotmentColumns['Round'];
-      if(comparater === "<=")
-      {
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;     
-          if(rank <= parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === ">=")
-      {
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank >= parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === "="){
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank == parseFloat(value)) return true; else return false;
-        };
-      }else if(comparater === "range"){
-        tableFilter = function (settings, data, dataIndex) {
-          var rank = parseFloat(data[colIndex]) || 0;
-          if(rank >= parseFloat(value) && rank <= parseFloat(filter[3])) return true; else return false;
+          var colData = parseFloat(data[colIndex]) || 0;
+          if(colData >= parseFloat(value) && colData <= parseFloat(filter[3])) return true; else return false;
         };
       }
       else

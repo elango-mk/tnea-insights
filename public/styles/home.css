@@ -33,7 +33,7 @@ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 
 .left-bar
 {
-        display: flex;
+    display: flex;
     flex-direction:column;
     row-gap: 0px;
     width:70px;
@@ -92,7 +92,7 @@ box-sizing: border-box;
 .content-pane
 {
     height:100%;
-    width:calc(100% - 230px);
+    width:calc(100% - 80px); /*Need to set to 230, once left pane is introduced*/
     box-sizing: border-box;
     background-color:#fbfafa;
 }
@@ -117,7 +117,7 @@ box-sizing: border-box;
 }
 .filter-table input
 {
-    font-size: 9px;
+    font-size: 12px;
     width: 150px;
 }
 .filter-table select

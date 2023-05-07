@@ -1,0 +1,4 @@
+switchTabs(element)
+{
+    
+}
