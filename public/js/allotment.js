@@ -123,14 +123,63 @@ function applyFilter()
         console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
       }   
     }
-    else if(key === "community")
+    else if(key === "round")
     {
-      const colIndex = allotmentColumns['Community'];
+      const colIndex = allotmentColumns['Round'];
+      if(comparater === "<=")
+      {
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;     
+          if(rank <= parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === ">=")
+      {
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank >= parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === "="){
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank == parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === "range"){
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank >= parseFloat(value) && rank <= parseFloat(filter[3])) return true; else return false;
+        };
+      }
+      else
+      {
+        console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
+      }   
+    }
+    else if(key === "community" || key === "branch" || key === "allotedcategory")
+    {
+      let colIndex = 0;
+      switch (key)
+      {
+        case "community":
+          colIndex = allotmentColumns['Community'];
+          break;
+        case "branch":
+          colIndex = allotmentColumns['Branch Code'];
+          break;
+        case "allotedcategory":
+          colIndex = allotmentColumns['Alloted Category'];
+          break;
+      } 
       if(comparater === "is")
       {
         tableFilter = function (settings, data, dataIndex) {
-          var community = data[colIndex] || "";     
-          if(community === value) return true; else return false;
+          var colData = data[colIndex] || "";     
+          if(colData === value) return true; else return false;
+        };
+      }
+      else if(comparater === "is not"){
+        tableFilter = function (settings, data, dataIndex) {
+          var colData = data[colIndex] || "";     
+          if(colData !== value) return true; else return false;
         };
       }
       else
@@ -245,9 +294,9 @@ function comparatorOnUpdate(element)
 
 function filterKeyOnUpdate(element)
 {
-  const numberKeys = ["mark", "rank"];
-  const dropdownKeys = ["community"];
-  const stringKeys = ["brach"];
+  const numberKeys = ["mark", "rank", "round"];
+  const dropdownKeys = ["community", "allotedcategory", "branch"];
+  const stringKeys = [];
 
   console.log("inside filterKeyOnUpdate");
   const row = $(element).parentsUntil('table');
@@ -265,6 +314,7 @@ function filterKeyOnUpdate(element)
   {
     comparater.empty();
     comparater.append($('<option>').text('is').val('is')).attr("selected", true);
+    comparater.append($('<option>').text('is not').val('is not')).attr("selected", true);
   }else if(stringKeys.includes(value))
   {
     comparater.empty();
@@ -285,6 +335,9 @@ function addFilterRow(element)
   filterKeySelect.append($('<option>').text('Mark').val('mark')).attr('selected', true);
   filterKeySelect.append($('<option>').text('Rank').val('rank'));
   filterKeySelect.append($('<option>').text('Community').val('community'));
+  filterKeySelect.append($('<option>').text('Branch').val('branch'));
+  filterKeySelect.append($('<option>').text('Alloted Category').val('allotedcategory'));
+  filterKeySelect.append($('<option>').text('Round').val('round'));
 
   let filterComparaterSelect = $('<select>').attr({'name':'filter-comp','onchange':'comparatorOnUpdate(this)'});
 
