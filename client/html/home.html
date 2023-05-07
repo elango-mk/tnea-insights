@@ -30,130 +30,15 @@
             <div  id="column-selection">
                 <label id="columnSelectorBtn">Custom Filter ⮟</label>
                 <div id="custom-filter" style="display:none;background-color: aliceblue;">
-                    <div style="display:flex;flex-direction: row;column-gap: 200px;">
+                    <div style="display:flex;flex-direction: row;column-gap: 200px;">     
                         <div>
-                            <table class="filter-table">
-                                <tr>
-                                    <td>Aggregate Mark</td>
-                                    <td>
-                                        <select id="filter-mark-comp">
-                                            <option value="<="><=</option>
-                                            <option value=">=">>=</option>
-                                            <option value="=">=</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input id="filter-mark-input"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Rank</td>
-                                    <td>
-                                        <select id="filter-rank-comp">
-                                            <option value="le"><=</option>
-                                            <option value="ge">>=</option>
-                                            <option value="e">>=</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input id="filter-rank-input" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Community</td>
-                                    <td>
-                                        <select id="filter-community-input">
-                                            <option>-</option>
-                                            <option value="OC">OC</option>
-                                            <option value="BC">BC</option>
-                                            <option value="BCM">BCM</option>
-                                            <option value="MBC">MBC</option>
-                                            <option value="DNC">DNC</option>
-                                            <option value="SC">SC</option>
-                                            <option value="SCA">SCA</option>
-                                            <option value="ST">ST</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                       <!-- <div>
-                            <table class="filter-table">
-                                <tr>
-                                    <td>College Code</td>
-                                    <td>
-                                        <select id="filter-college-comp" disabled>
-                                            <option value="equals">equlas</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input id="filter-college-input" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Branch Code</td>
-                                    <td>
-                                        <select id="filter-branch-comp" disabled>
-                                            <option value="equals">equlas</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input id="filter-branch-input" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Round</td>
-                                    <td>
-                                        <select id="filter-round-input">
-                                            <option>-</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>-->
-                        <div>
-                            <table class="filter-table" id="advanced-filter">
-                                <tr>
-                                    <td>
-                                        <select name="filter-key">
-                                            <option value="mark">Mark</option>
-                                            <!--<option value="community">Community</option>
-                                            <option value="College">College</option>-->
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="filter-comp" type="float" onchange="comparatorOnUpdate(this)">
-                                            <option value="<="><=</option>
-                                            <option value=">=">>=</option>
-                                            <option value="=">=</option>
-                                            <option value="range">range</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input name="filter-value" />
-                                        <input name="filter-value2" style="display:none" />
-                                    </td>
-                                    <td>
-                                        <input type="button" value="+" style="font-size:12px;width: 50px;" onclick="">
-                                    </td>
-                                    <td>
-                                        <input type="button" value="x" style="font-size:12px;width: 50px;" onclick="">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="button" value="Apply Filter" style="font-size:12px;" onclick="applyFilter()">
-                                    </td>
-                                    <td>
-                                        <input type="button" value="Remove Filter" style="font-size:12px;" onclick="removeFilter()">
-                                    </td>                                
-                                </tr>
-                            </table>
+                            <table class="filter-table" id="advanced-filter"></table>
+                            <br>
+                            <input type="button" value="Apply Filter" style="font-size:12px;" onclick="applyFilter()">
+                            <input type="button" value="Remove Filter" style="font-size:12px;" onclick="removeFilter()">
                         </div>
                     </div>
+                    <br>
                     <div id="columnSelectorItems"></div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ function tneaHomeOnload()
     $('#custom-filter').toggle();
   });
   getAllotmentData();
+  addFilterRow($('#advanced-filter'));
   
 }
 
@@ -41,23 +42,7 @@ function populateAllotmentData()
     order: [1, 'asc']
   });
 
-  addColumnSelection();
-
- 
-
-  
-
-
-    /*$('#allotment-data thead th').each(function () {
-      $(this).append('<br><input type="text" placeholder="Search" style="width:100px" onclick="event.stopPropagation();"/>');
-    });*/ 
-
-    /*$('#allotment-data input').on('keyup change clear', function () {
-      alert("test");
-      if (column.search() !== this.value) {
-        column.search(this.value).draw();
-      }
-    });*/            
+  addColumnSelection();            
   
 } 
 
@@ -72,46 +57,86 @@ function applyFilter()
   
   $.fn.dataTable.ext.search = [];
   filters.forEach(function(filter){
-    const key = filter[0].toUpperCase();
+    //console.log(filter);
+    const key = filter[0].toLowerCase();
     const comparater = filter[1].toLowerCase();
     const value = filter[2];
-    if(key === "MARK")
+    if(key === "mark")
     {
+      const colIndex = allotmentColumns['Mark'];
       if(comparater === "<=")
       {
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[allotmentColumns['Mark']]) || 0;     
-          if(mark <= parseFloat(value)) return true;
-          else return false;
+          var mark = parseFloat(data[colIndex]) || 0;     
+          if(mark <= parseFloat(value)) return true; else return false;
         };
       }else if(comparater === ">=")
       {
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[allotmentColumns['Mark']]) || 0;
-          if(mark >= parseFloat(value)) return true;
-          else return false;
+          var mark = parseFloat(data[colIndex]) || 0;
+          if(mark >= parseFloat(value)) return true; else return false;
         };
-        //$.fn.dataTable.ext.search.push(tableFilter);
       }else if(comparater === "="){
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[allotmentColumns['Mark']]) || 0;
-          if(mark == parseFloat(value)) return true;
-          else return false;
+          var mark = parseFloat(data[colIndex]) || 0;
+          if(mark == parseFloat(value)) return true; else return false;
         };
-        //$.fn.dataTable.ext.search.push(tableFilter);
       }else if(comparater === "range"){
         tableFilter = function (settings, data, dataIndex) {
-          var mark = parseFloat(data[allotmentColumns['Mark']]) || 0;
-          if(mark >= parseFloat(value) && mark <= parseFloat(filter[3])) return true;
-          else return false;
+          var mark = parseFloat(data[colIndex]) || 0;
+          if(mark >= parseFloat(value) && mark <= parseFloat(filter[3])) return true; else return false;
         };
-        //$.fn.dataTable.ext.search.push(tableFilter);
       }
       else
       {
         console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
+      }   
+    }
+    else if(key === "rank")
+    {
+      const colIndex = allotmentColumns['Rank'];
+      if(comparater === "<=")
+      {
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;     
+          if(rank <= parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === ">=")
+      {
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank >= parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === "="){
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank == parseFloat(value)) return true; else return false;
+        };
+      }else if(comparater === "range"){
+        tableFilter = function (settings, data, dataIndex) {
+          var rank = parseFloat(data[colIndex]) || 0;
+          if(rank >= parseFloat(value) && rank <= parseFloat(filter[3])) return true; else return false;
+        };
       }
-      
+      else
+      {
+        console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
+      }   
+    }
+    else if(key === "community")
+    {
+      const colIndex = allotmentColumns['Community'];
+      if(comparater === "is")
+      {
+        tableFilter = function (settings, data, dataIndex) {
+          var community = data[colIndex] || "";     
+          if(community === value) return true; else return false;
+        };
+      }
+      else
+      {
+        console.log("Error : applyFilter | Not a valid comparater - " + filter[1].toLowerCase())
+      }   
     }
     else
     {
@@ -204,17 +229,101 @@ function testRangeFilter()
 function comparatorOnUpdate(element)
 {
   console.log("inside comparatorOnUpdate");
+  const filterRow = $(element).parentsUntil('table');
+  const filterComparater = $(element).val();
+
+  filterRow.find('input[name="filter-value2"]').hide();
+  if(filterComparater === "range")
+    filterRow.find('input[name="filter-value2"]').show();
+  else if(filterComparater === "is")
+  {
+
+  }
+
+}
+     
+
+function filterKeyOnUpdate(element)
+{
+  const numberKeys = ["mark", "rank"];
+  const dropdownKeys = ["community"];
+  const stringKeys = ["brach"];
+
+  console.log("inside filterKeyOnUpdate");
   const row = $(element).parentsUntil('table');
   const value = $(element).val();
-  if(value === "range")
+  const comparater = $(row).find('select[name="filter-comp"]');
+  if(numberKeys.includes(value))
   {
-    row.find('input[name="filter-value2"]').show();
+    comparater.empty();
+    comparater.append($('<option>').text('<=').val('<=')).attr("selected", true);
+    comparater.append($('<option>').text('=').val('='));
+    comparater.append($('<option>').text('>=').val('>='));
+    comparater.append($('<option>').text('range').val('range'));
   } 
-  else {
-    row.find('input[name="filter-value2"]').hide();
+  else if(dropdownKeys.includes(value))
+  {
+    comparater.empty();
+    comparater.append($('<option>').text('is').val('is')).attr("selected", true);
+  }else if(stringKeys.includes(value))
+  {
+    comparater.empty();
+    comparater.append($('<option>').text('is').val('is')).attr("selected", true);
+    comparater.append($('<option>').text('contains').val('contains'));
+  } else {
+    comparater.empty();
   }
+  comparatorOnUpdate($(comparater));
 }
-      /*const dataTable = $('#dataTable').DataTable({
+
+function addFilterRow(element)
+{
+  const filterTable = $(element).closest('table');
+  let filterRow = $('<tr>').appendTo(filterTable);
+  
+  let filterKeySelect = $('<select>').attr({'name':'filter-key','onchange':'filterKeyOnUpdate(this)'});
+  filterKeySelect.append($('<option>').text('Mark').val('mark')).attr('selected', true);
+  filterKeySelect.append($('<option>').text('Rank').val('rank'));
+  filterKeySelect.append($('<option>').text('Community').val('community'));
+
+  let filterComparaterSelect = $('<select>').attr({'name':'filter-comp','onchange':'comparatorOnUpdate(this)'});
+
+  let filterValueInput = $('<input>').attr({'name':'filter-value'});
+  let filterValueInput2 = $('<input>').attr({'name':'filter-value2'}).hide();
+
+
+  let filterAddButton = $('<input>').attr({'type':'button','value':'+','onclick':'addFilterRow(this)'}).css({'width':'50px','font-size':'12px'});
+  let filterRemoveButton = $('<input>').attr({'type':'button','value':'x','onclick':'removeFlterRow(this)'}).css({'width':'50px','font-size':'12px'});
+
+  $('<td>').append(filterKeySelect).appendTo(filterRow);
+  $('<td>').append(filterComparaterSelect).appendTo(filterRow);
+  $('<td>').append(filterValueInput).appendTo(filterRow);
+  $('<td>').append(filterValueInput2).appendTo(filterRow);
+  $('<td>').append(filterAddButton).appendTo(filterRow);
+  $('<td>').append(filterRemoveButton).appendTo(filterRow);
+
+
+  filterKeyOnUpdate($(filterKeySelect));
+
+}
+
+function removeFlterRow(element)
+{
+  const filterTable = $(element).closest('table');
+  const filterRow = $(element).closest('tr');
+  filterRow.remove();
+
+  
+  console.log(filterTable);
+  if(filterTable.find('tr').length == 0)
+  {
+    addFilterRow($(filterTable));
+  }
+  
+}
+
+
+/*const dataTable = $('#dataTable').DataTable({
           initComplete: function () {
               // Apply the search
               this.api()
