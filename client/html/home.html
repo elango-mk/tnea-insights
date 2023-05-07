@@ -20,7 +20,7 @@
                 <img  title="Runner" src="/images/allotment.png"  width="30"   height="30"></img><br>
                 <label style="font-weight:bold;font-size: 12px">2022</label>
             </div>
-            <div class="left-bar-item" id="generalinfo" onclick="switchTabs(this)">
+            <div class="left-bar-item" id="info" onclick="switchTabs(this)">
                 <img  title="Runner" src="/images/info.png"  width="30"   height="30"></img><br>
                 <label style="font-weight:bold;font-size: 12px">Info</label>
             </div>
@@ -31,28 +31,39 @@
             </div>
         </div>-->
         <div class="content-pane">
-            <div  id="column-selection">
-                <label id="columnSelectorBtn">Custom Filter ⮟</label>
-                <div id="custom-filter" style="display:none;background-color: aliceblue;">
-                    <div style="display:flex;flex-direction: row;column-gap: 200px;">     
-                        <div>
-                            <table class="filter-table" id="advanced-filter"></table>
-                            <br>
-                            <input type="button" value="Apply Filter" style="font-size:12px;" onclick="applyFilter()">
-                            <input type="button" value="Remove Filter" style="font-size:12px;" onclick="removeFilter()">
+            <div class = "data-panel active-panel" id="allotment-pane">
+                <div  id="column-selection">
+                    <label id="columnSelectorBtn">Custom Filter ⮟</label>
+                    <div id="custom-filter" style="display:none;background-color: aliceblue;">
+                        <div style="display:flex;flex-direction: row;column-gap: 200px;">     
+                            <div>
+                                <table class="filter-table" id="advanced-filter"></table>
+                                <br>
+                                <input type="button" value="Apply Filter" style="font-size:12px;" onclick="applyFilter()">
+                                <input type="button" value="Remove Filter" style="font-size:12px;" onclick="removeFilter()">
+                            </div>
                         </div>
+                        <br>
+                        <div id="columnSelectorItems"></div>
                     </div>
-                    <br>
-                    <div id="columnSelectorItems"></div>
+                </div>
+                <br>
+                
+                <div class="" id="allotment-data">
+                    <table id="allotment-table" class="table-striped table-bordered" style="width:100%">
+                    </table>
                 </div>
             </div>
-            <br>
-            
-            <div class="" id="allotment-data">
-                <table id="allotment-table" class="table-striped table-bordered" style="width:100%">
-                </table>
-            </div>
+            <div class = "data-panel"  id="info-pane" style="padding:20px 50px 20px 50px;display:none">
+                <h3>TNEA Insights Disclaimer</h3>
 
+                <p>This website is a hobby project developed by the owner. All details provided on this website are collected from the public data available on <a href="https://www.tneaonline.org/" target="_blank">https://www.tneaonline.org/</a>. The owner makes every effort to ensure that the information presented is accurate and up-to-date. However, the owner does not guarantee the accuracy, reliability, or completeness of the information provided on this website.</p>
+
+                <p>It is recommended that visitors cross-verify the information presented on this website with the official website of TNEA at <a href="https://www.tneaonline.org/" target="_blank">https://www.tneaonline.org/</a> before relying on it. The owner shall not be liable for any loss or damage caused by the use or reliance on any information provided on this website.</p>
+
+                <p>If any discrepancies are found in the information provided on this website, visitors are requested to bring it to the attention of the owner by writing to <a href="mailto:elangovant15@gmail.com">elangovant15@gmail.com</a>. The owner will make every effort to correct the discrepancies as soon as possible.</p>
+
+            </div>
         </div>
 
     </div>

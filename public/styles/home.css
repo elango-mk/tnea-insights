@@ -66,6 +66,11 @@ box-sizing: border-box;
     border-left: 3px solid #24a026;
 }
 
+.active-pane
+{
+    display: flex;
+}
+
 
 .left-menu
 {

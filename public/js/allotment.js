@@ -61,7 +61,7 @@ function applyFilter()
     const key = filter[0].toLowerCase();
     const comparater = filter[1].toLowerCase();
     const value = filter[2];
-    if(key === "mark" || key === "rank" || key === "round")
+    if(key === "mark" || key === "rank" || key === "round" || key === "collegecode")
     {
       let colIndex = 0;
       switch (key)
@@ -74,6 +74,9 @@ function applyFilter()
           break;
         case "round":
           colIndex = allotmentColumns['Round'];
+          break;
+        case "collegecode":
+          colIndex = allotmentColumns['College Code'];
           break;
       } 
       if(comparater === "<=")
@@ -244,7 +247,7 @@ function comparatorOnUpdate(element)
 
 function filterKeyOnUpdate(element)
 {
-  const numberKeys = ["mark", "rank", "round"];
+  const numberKeys = ["mark", "rank", "round", "collegecode"];
   const dropdownKeys = ["community", "allotedcategory", "branch"];
   const stringKeys = [];
 
@@ -285,6 +288,7 @@ function addFilterRow(element)
   filterKeySelect.append($('<option>').text('Mark').val('mark')).attr('selected', true);
   filterKeySelect.append($('<option>').text('Rank').val('rank'));
   filterKeySelect.append($('<option>').text('Community').val('community'));
+  filterKeySelect.append($('<option>').text('College Code').val('collegecode'));
   filterKeySelect.append($('<option>').text('Branch').val('branch'));
   filterKeySelect.append($('<option>').text('Alloted Category').val('allotedcategory'));
   filterKeySelect.append($('<option>').text('Round').val('round'));
