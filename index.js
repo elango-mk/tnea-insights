@@ -1,6 +1,6 @@
 const fs = require('fs');
 const express = require('express');
-const cache = require('memory-cache');
+const memCache = require('memory-cache');
 const actionUtils = require('./src/js/actionUtils');
 const zlib = require('zlib');
 
@@ -16,19 +16,20 @@ app.use(express.static('public'));
 // Start the server
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}.`);
+
+    //allotment data 
+    (async () => {
+      console.log("Inside async block");
+      try {
+        const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
+        memCache.put('compressedAllotmentData', compressedAllotmentData);
+        console.log("Cache Completed");
+      } catch (err) {
+        console.error(err);
+      }
+    })();
   });
   
-//allotment data 
-(async () => {
-  console.log("Inside async block");
-  try {
-    const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
-    cache.put('compressedAllotmentData', compressedAllotmentData);
-    console.log("Cache Completed");
-  } catch (err) {
-    console.error(err);
-  }
-})();
 
 
 app.get('/', (req, res) => {
@@ -56,7 +57,7 @@ app.get('/getAllotmentArrays', async (req, res) => {
 });
 app.get('/getAllotmentObjects', async (req, res) => {
   res.setHeader('Content-Encoding', 'br');
-  const allotmentDataCache = cache.get('compressedAllotmentData');
+  const allotmentDataCache = memCache.get('compressedAllotmentData');
   if (allotmentDataCache) {    
     console.log("inside cached content");
     res.send(allotmentDataCache);
@@ -65,8 +66,8 @@ app.get('/getAllotmentObjects', async (req, res) => {
     console.log("inside non cached content");
     const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
     res.send(compressedAllotmentData);
-    cache.put('compressedAllotmentData', compressedAllotmentData);
-    console.log(cache.get('compressedAllotmentData'));
+    memCache.put('compressedAllotmentData', compressedAllotmentData);
+    console.log('end of non cached content');
   }
 });
 
