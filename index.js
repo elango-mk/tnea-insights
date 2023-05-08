@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+const cache = require('memory-cache');
 const actionUtils = require('./src/js/actionUtils');
 const zlib = require('zlib');
 
@@ -20,8 +21,8 @@ const server = app.listen(PORT, () => {
 //allotment data 
 (async () => {
   try {
-    console.log("in async block");
-    process.env.allotmentData = JSON.stringify( await actionUtils.getAllotmentObjects());
+    const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
+    cache.put('compressedAllotmentData', compressedAllotmentData);
   } catch (err) {
     console.error(err);
   }
@@ -52,12 +53,16 @@ app.get('/getAllotmentArrays', async (req, res) => {
   res.send(data);
 });
 app.get('/getAllotmentObjects', async (req, res) => {
-  //let data = await actionUtils.getAllotmentObjects();
-  //console.log("App Data Length : " + data.length);
-  //console.log(process.env.allotmentData);
-  const compressedData = zlib.brotliCompressSync(Buffer.from(process.env.allotmentData));
   res.setHeader('Content-Encoding', 'br');
-  res.send(compressedData);
+  const allotmentDataCache = cache.get('compressedAllotmentData');
+  if (allotmentDataCache) {    
+    res.send(allotmentDataCache);
+  }
+  else{
+    const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
+    cache.put('compressedAllotmentData', compressedAllotmentData);
+    res.send(compressedAllotmentData);
+  }
 });
 
 

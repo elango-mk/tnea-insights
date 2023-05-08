@@ -39,8 +39,8 @@ async function getAllotmentObjects()
   reponseObj['data'] = data;
   //console.log(reponseObj);
  
-  //const compressedData = zlib.brotliCompressSync(Buffer.from(JSON.stringify(reponseObj)));
-  return reponseObj;
+  const compressedData = zlib.brotliCompressSync(Buffer.from(JSON.stringify(reponseObj)));
+  return compressedData;
 }
 
 module.exports = { getAllotmentData, getAllotmentObjects };
