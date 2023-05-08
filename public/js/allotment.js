@@ -14,9 +14,9 @@ function tneaHomeOnload()
 
 function getAllotmentData()
 {
-  sendRequest('/getAllotmentObjects')
+  sendRequest('/allotmentData')
   .done(function (data, status, xhr) {
-    const json = JSON.parse(data);
+
 
     let dataTableCol = [];
     for(let colName in allotmentColumns) {
@@ -24,7 +24,7 @@ function getAllotmentData()
     }
 
     $('#allotment-table').DataTable({
-      data: json['data'],
+      data: data['data'],
       columns: dataTableCol,
       "pageLength": 25,
       "scrollY": "630px",

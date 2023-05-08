@@ -1,9 +1,6 @@
 const fs = require('fs');
 const express = require('express');
-const memCache = require('memory-cache');
 const actionUtils = require('./src/js/actionUtils');
-const zlib = require('zlib');
-
 
 // Create an instance of the Express app
 const app = express();
@@ -11,23 +8,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-
-
 // Start the server
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}.`);
-
-    //allotment data 
-    (async () => {
-      console.log("Inside async block");
-      try {
-        const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
-        memCache.put('compressedAllotmentData', compressedAllotmentData);
-        console.log("Cache Completed");
-      } catch (err) {
-        console.error(err);
-      }
-    })();
   });
   
 
@@ -45,7 +28,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/getData', async (req, res) => {
+/*app.get('/getData', async (req, res) => {
     let data = await actionUtils.getAllotmentData();
     console.log("App Data Length : " + data.length);
     res.send(data);
@@ -69,8 +52,20 @@ app.get('/getAllotmentObjects', async (req, res) => {
     memCache.put('compressedAllotmentData', compressedAllotmentData);
     console.log('end of non cached content');
   }
-});
+});*/
 
+app.get('/allotmentData', async (req, res) => {
+  const filePath = './db/compressedAllotmentData.br';
+  const stats = fs.statSync(filePath);
+  const fileSize = stats.size;
+
+  res.setHeader('Content-Encoding', 'br');
+  res.setHeader('Content-Length', fileSize);
+  res.setHeader('Content-Type', 'application/json');
+
+  const readStream = fs.createReadStream(filePath);
+  readStream.pipe(res);
+});
 
 
 
