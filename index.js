@@ -24,6 +24,7 @@ const server = app.listen(PORT, () => {
   try {
     const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
     cache.put('compressedAllotmentData', compressedAllotmentData);
+    console.log("Cache Completed");
   } catch (err) {
     console.error(err);
   }
@@ -63,8 +64,9 @@ app.get('/getAllotmentObjects', async (req, res) => {
   else{
     console.log("inside non cached content");
     const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
-    cache.put('compressedAllotmentData', compressedAllotmentData);
     res.send(compressedAllotmentData);
+    cache.put('compressedAllotmentData', compressedAllotmentData);
+    console.log(cache.get('compressedAllotmentData'));
   }
 });
 
