@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const actionUtils = require('./src/js/actionUtils');
+const zlib = require('zlib');
 
 
 // Create an instance of the Express app
@@ -9,11 +10,22 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
+
+
 // Start the server
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}.`);
   });
   
+//allotment data 
+(async () => {
+  try {
+    console.log("in async block");
+    process.env.allotmentData = JSON.stringify( await actionUtils.getAllotmentObjects());
+  } catch (err) {
+    console.error(err);
+  }
+})();
 
 
 app.get('/', (req, res) => {
@@ -40,10 +52,12 @@ app.get('/getAllotmentArrays', async (req, res) => {
   res.send(data);
 });
 app.get('/getAllotmentObjects', async (req, res) => {
-  let data = await actionUtils.getAllotmentObjects();
+  //let data = await actionUtils.getAllotmentObjects();
+  //console.log("App Data Length : " + data.length);
+  //console.log(process.env.allotmentData);
+  const compressedData = zlib.brotliCompressSync(Buffer.from(process.env.allotmentData));
   res.setHeader('Content-Encoding', 'br');
-  console.log("App Data Length : " + data.length);
-  res.send(data);
+  res.send(compressedData);
 });
 
 
