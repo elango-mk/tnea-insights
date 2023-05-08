@@ -37,6 +37,29 @@ function runQuery(sqlQuery)
     return new Promise((resolve, reject) => {
       db.all(sqlQuery, [], (err, rows) => {
         // Close the database connection
+        //console.log(rows)
+        closeDbConnection(db);  
+        if (err) {
+          console.error(err.message);
+          reject(err);
+        } else {
+          const data = rows.map(row => Object.values(row));
+          resolve(data);
+        }
+      });
+    });
+}
+
+function getRowObjects(sqlQuery)
+{
+    console.log("Running Query : " + sqlQuery);
+    const db = openDbConection();
+    //let sqlQuery = `SELECT APPLICATION_NO,CANDIDATE_NAME,AGGR_MARK,RANK,COMMUNITY,COLLEGE_CODE,BRANCH_CODE,ALLOTTED_CATEGORY,ROUND FROM Allotment`;
+
+    return new Promise((resolve, reject) => {
+      db.all(sqlQuery, [], (err, rows) => {
+        // Close the database connection
+        //console.log(rows)
         closeDbConnection(db);  
         if (err) {
           console.error(err.message);
@@ -167,4 +190,4 @@ function getRows(db) {
 //getRows();
 //closeDbConnection(db);
 
-module.exports = { openDbConection, closeDbConnection, runQuery};
+module.exports = { openDbConection, closeDbConnection, runQuery, getRowObjects};

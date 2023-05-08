@@ -34,6 +34,18 @@ app.get('/getData', async (req, res) => {
     console.log("App Data Length : " + data.length);
     res.send(data);
 });
+app.get('/getAllotmentArrays', async (req, res) => {
+  let data = await actionUtils.getAllotmentArrays();
+  console.log("App Data Length : " + data.length);
+  res.send(data);
+});
+app.get('/getAllotmentObjects', async (req, res) => {
+  let data = await actionUtils.getAllotmentObjects();
+  res.setHeader('Content-Encoding', 'br');
+  console.log("App Data Length : " + data.length);
+  res.send(data);
+});
+
 
 
 

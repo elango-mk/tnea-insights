@@ -1,4 +1,3 @@
-
 const allotmentColumns = {'Application No':0, 'Name':1, 'Mark':2, 'Rank':3, 'Community':4, 'College Code':5, 'Branch Code':6, 'Alloted Category':7, 'Round':8};
 
 
@@ -8,43 +7,38 @@ function tneaHomeOnload()
     $('#custom-filter').toggle();
   });
   getAllotmentData();
-  addFilterRow($('#advanced-filter'));
-  
+  addFilterRow($('#advanced-filter')); 
 }
 
 
 
 function getAllotmentData()
 {
-  sendGetRequest('/getData')
+  sendRequest('/getAllotmentObjects')
   .done(function (data, status, xhr) {
-    localStorage.setItem('allotmentData', JSON.stringify(data));
-    populateAllotmentData();
+    const json = JSON.parse(data);
+
+    let dataTableCol = [];
+    for(let colName in allotmentColumns) {
+      dataTableCol.push({ title: colName });
+    }
+
+    $('#allotment-table').DataTable({
+      data: json['data'],
+      columns: dataTableCol,
+      "pageLength": 25,
+      "scrollY": "630px",
+      "scrollX": true,
+      order: [1, 'asc']
+    });
+  
+    addColumnSelection();
+  })
+
+  .fail(function(jqXHR, textStatus, errorThrown) {
+    console.log('Error:', textStatus, errorThrown);
   });
 }
-
-function populateAllotmentData()
-{
-  const allotmentData = JSON.parse(localStorage.getItem('allotmentData'));
-
-  let dataTableCol = [];
-  for(let colName in allotmentColumns) {
-    dataTableCol.push({ title: colName });
-  }
-
-  console.log(allotmentData);
-  const dataTable = $('#allotment-table').DataTable({
-    data: allotmentData,
-    columns: dataTableCol,
-    "pageLength": 25,
-    "scrollY": "610px",
-    "scrollX": true,
-    order: [1, 'asc']
-  });
-
-  addColumnSelection();            
-  
-} 
 
        
 function applyFilter()
@@ -328,60 +322,3 @@ function removeFlterRow(element)
   }
   
 }
-
-
-/*const dataTable = $('#dataTable').DataTable({
-          initComplete: function () {
-              // Apply the search
-              this.api()
-                  .columns()
-                  .every(function () {
-                    const column = this;
-   
-                      $('input', this.header()).on('keyup change clear', function () {
-                        if (column.search() !== this.value) {
-                          column.search(this.value).draw();
-                        }
-                      });
-                  });
-          },
-          "pageLength": 25,
-          "scrollY": "510px",
-          "scrollX": true
-      });
-
-
-
-function applyFilter()
-{
-  console.log("Applying Filters")
-  const dataTable = $('#allotment-table').DataTable();
-
-  let mark = $('#filter-mark-input').val();
-  let markComp = $('#filter-mark-comp').val();
-  let rank = $('#filter-rank-input').val();
-  let community = $('#filter-community-input').val();
-  let college = $('#filter-college-input').val();
-  let branch = $('#ffilter-branch-input').val();
-  let round = $('#ffilter-round-input').val();
-
-  dataTable.column(allotmentColumns['Mark']).search('^>50$', true, false).draw();
-  //dataTable.column(allotmentColumns['Mark']).search(`^${markComp}${mark}$`, true, false).draw();
-
-  console.log(mark);
-  //let markCol = dataTable.column(allotmentColumns['Mark']);
-  //if (markCol.search() !== mark) {
-  //  markCol.search(mark).draw();
- // }
-
-
-//$('#allotment-data input').on('keyup change clear', function () {
- //   alert("test");
-    
-  });
-
-}
-
-        */
-
-
