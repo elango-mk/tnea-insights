@@ -20,6 +20,7 @@ const server = app.listen(PORT, () => {
   
 //allotment data 
 (async () => {
+  console.log("Inside async block");
   try {
     const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
     cache.put('compressedAllotmentData', compressedAllotmentData);
@@ -56,9 +57,11 @@ app.get('/getAllotmentObjects', async (req, res) => {
   res.setHeader('Content-Encoding', 'br');
   const allotmentDataCache = cache.get('compressedAllotmentData');
   if (allotmentDataCache) {    
+    console.log("inside cached content");
     res.send(allotmentDataCache);
   }
   else{
+    console.log("inside non cached content");
     const compressedAllotmentData = await actionUtils.getAllotmentObjects();  
     cache.put('compressedAllotmentData', compressedAllotmentData);
     res.send(compressedAllotmentData);
