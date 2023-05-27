@@ -14,7 +14,7 @@ function tneaHomeOnload()
 
 function getAllotmentData()
 {
-  sendRequest('/allotmentData')
+  /*sendRequest('/allotmentData')
   .done(function (data, status, xhr) {
 
 
@@ -31,12 +31,37 @@ function getAllotmentData()
       "scrollX": true,
       order: [1, 'asc']
     });
+    
   
     addColumnSelection();
   })
 
   .fail(function(jqXHR, textStatus, errorThrown) {
     console.log('Error:', textStatus, errorThrown);
+  });*/
+
+  fetch('/allotmentData')
+  .then(response => response.json())
+  .then(data => {
+    let dataTableCol = [];
+    for(let colName in allotmentColumns) {
+      dataTableCol.push({ title: colName });
+    }
+
+    $('#allotment-table').DataTable({
+      data: data['data'],
+      columns: dataTableCol,
+      "pageLength": 25,
+      "scrollY": "630px",
+      "scrollX": true,
+      order: [1, 'asc']
+    });
+
+    addColumnSelection();
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the request
+    console.error(error);
   });
 }
 

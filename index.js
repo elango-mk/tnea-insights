@@ -57,12 +57,13 @@ app.get('/getAllotmentObjects', async (req, res) => {
 });*/
 
 app.get('/allotmentData', async (req, res) => {
-  const filePath = './db/compressedAllotmentData.br';
+  //const filePath = './db/compressedAllotmentData.br';
+  const filePath = './db/allotmentData.json';
   const stats = fs.statSync(filePath);
   const fileSize = stats.size;
 
-  res.setHeader('Content-Encoding', 'br');
-  res.setHeader('Content-Length', fileSize);
+  //res.setHeader('Content-Encoding', 'br');
+  //res.setHeader('Content-Length', fileSize);
   res.setHeader('Content-Type', 'application/json');
 
   const readStream = fs.createReadStream(filePath);
