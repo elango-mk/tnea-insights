@@ -1,12 +1,14 @@
 const fs = require('fs');
 const express = require('express');
 const actionUtils = require('./src/js/actionUtils');
+const compression = require('compression');
 
 // Create an instance of the Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
+app.use(compression());
 
 // Start the server
 const server = app.listen(PORT, () => {
