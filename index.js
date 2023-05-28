@@ -57,17 +57,29 @@ app.get('/getAllotmentObjects', async (req, res) => {
 });*/
 
 app.get('/allotmentData', async (req, res) => {
-  //const filePath = './db/compressedAllotmentData.br';
-  const filePath = './db/allotmentData.json';
-  const stats = fs.statSync(filePath);
-  const fileSize = stats.size;
+  const filePath = './db/compressedAllotmentData.br';
+  //const filePath = './db/allotmentData.json';
+  //const stats = fs.statSync(filePath);
+  //const fileSize = stats.size;
 
-  //res.setHeader('Content-Encoding', 'br');
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error reading file');
+      return;
+    }
+    res.setHeader('Content-Encoding', 'br');
+    res.setHeader('Content-Type', 'application/json');
+    res.send(data);
+
+  });
+
+  //
   //res.setHeader('Content-Length', fileSize);
-  res.setHeader('Content-Type', 'application/json');
+  
 
-  const readStream = fs.createReadStream(filePath);
-  readStream.pipe(res);
+  //const readStream = fs.createReadStream(filePath);
+  //readStream.pipe(res);
 });
 
 
