@@ -68,7 +68,7 @@ app.get('/allotmentData', async (req, res) => {
       res.status(500).send('Error reading file');
       return;
     }
-    //res.setHeader('Content-Encoding', 'br');
+    res.setHeader('Content-Encoding', 'br');
     res.setHeader('Content-Type', 'application/json');
     res.send(data);
 
